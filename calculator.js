@@ -22,7 +22,7 @@ function operate(a, b, operator) {
         return a * b;
     } else if (operator === "÷") {
         if (b === 0) {
-            return "div by 0 error"
+            return "Div by 0 Error"
         } else {
             return a / b;
         }
@@ -40,7 +40,30 @@ function calculate(arr) {
         opIndex += 2;
     }
 
-    return accumulator;
+    return numCleanup(accumulator);
+}
+
+function numCleanup(number) {
+    let tenCounter = 0;
+    let res = String(number);
+    if (number > 999999999999999) { // write in scientific notation
+        while (number > 10) {
+            number /= 10;
+            tenCounter += 1;
+        }
+
+        res = truncate(number, 12) + "e" + String(tenCounter);
+        console.log(res);
+        
+    } else {
+        res = truncate(number, 15);
+    }
+
+    return res;
+}
+
+function truncate(number, digits) {
+    return String(number).slice(0, digits);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -56,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(parsedExpr);
 
                 if (parsedExpr == null) {
-                    displayText = "invalid expression";
+                    displayText = "Invalid Expression";
                 } else {
                     displayText = calculate(parsedExpr);
                 }
