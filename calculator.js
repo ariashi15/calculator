@@ -1,11 +1,11 @@
 // parse: parses if the input string is a valid combination of numbers and operators
 function parse(inputString) {
-    const regex = /(\d+(\.\d+)?[\+−×÷])(\d+(\.\d+)?)/;
+    const regex = /^(\d+(\.\d+)?[\+−×÷])(\d+(\.\d+)?)/;
     if (regex.test(inputString)) { // valid expression
         const matcher = /(\d+(\.\d+)?)|([\+−×÷])/g;
         return inputString.match(matcher); // return array in the form ["1", "+", "1"]
     } else {
-        return []; // not a valid input, so return empty array
+        return null; // not a valid input, so return empty array
     }
 }
 
@@ -21,7 +21,11 @@ function operate(a, b, operator) {
     } else if (operator === "×") {
         return a * b;
     } else if (operator === "÷") {
-        return a / b;
+        if (b === 0) {
+            return "div by 0 error"
+        } else {
+            return a / b;
+        }
     }
 }
 
@@ -49,8 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (val === "=") {
                 let parsedExpr = parse(displayText);
+                console.log(parsedExpr);
 
-                if (parsedExpr == []) {
+                if (parsedExpr == null) {
                     displayText = "invalid expression";
                 } else {
                     displayText = calculate(parsedExpr);
